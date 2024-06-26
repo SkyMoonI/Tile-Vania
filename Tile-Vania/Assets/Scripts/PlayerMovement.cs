@@ -20,7 +20,21 @@ public class PlayerMovement : MonoBehaviour
 	void Update()
 	{
 		Run();
+		FlipSprite();
 	}
+
+	// flip the sprite
+	private void FlipSprite()
+	{
+		// check if player has horizontal speed, means they are moving left or right
+		bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
+		// if player has horizontal speed (moving left or right), flip the sprite
+		if (playerHasHorizontalSpeed)
+		{
+			transform.localScale = new Vector2(Mathf.Sign(myRigidBody.velocity.x), 1f);
+		}
+	}
+
 	private void Run()
 	{
 		// create new vector based on input, keep the y velocity the same 
@@ -31,6 +45,5 @@ public class PlayerMovement : MonoBehaviour
 	void OnMove(InputValue value)
 	{
 		moveInput = value.Get<Vector2>();
-		Debug.Log(moveInput);
 	}
 }
