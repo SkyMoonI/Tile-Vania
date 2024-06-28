@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float movementSpeed = 5f;
 	[SerializeField] float jumpForce = 5f;
 	[SerializeField] float climbingSpeed = 2f;
-	[SerializeField] float gravityScale = 3f;
+	float gravityScaleAtStart;
 	Rigidbody2D myRigidBody;
 	Animator myAnimator;
 	bool isDoubleJumped = false;
@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 		myRigidBody = GetComponent<Rigidbody2D>(); // get rigidbody to change velocity  
 		myAnimator = GetComponent<Animator>();
 		myCollider2D = GetComponent<Collider2D>();
+		gravityScaleAtStart = myRigidBody.gravityScale;
 	}
 
 	// Update is called once per frame
@@ -85,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else
 		{
-			myRigidBody.gravityScale = gravityScale;
+			myRigidBody.gravityScale = gravityScaleAtStart;
 		}
 	}
 	// Input System listens for input here and we take it and assign it to moveInput 
