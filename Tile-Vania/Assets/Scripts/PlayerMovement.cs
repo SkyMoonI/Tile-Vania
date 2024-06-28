@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
 		// if player is floating and second jump button is pressed
 		if (value.isPressed && !isDoubleJumped && !myRigidBody.IsTouchingLayers(LayerMask.GetMask("Ground")))
 		{
-			Vector2 jumpVelocityToAdd = new Vector2(0f, jumpForce);
+			Vector2 jumpVelocityToAdd = new Vector2(0f, jumpForce / 2f);
 			myRigidBody.velocity += jumpVelocityToAdd;
 			isDoubleJumped = true;
 		}
