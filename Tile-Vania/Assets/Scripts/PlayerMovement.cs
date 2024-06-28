@@ -15,14 +15,15 @@ public class PlayerMovement : MonoBehaviour
 	Animator myAnimator;
 	bool isDoubleJumped = false;
 
-	Collider2D myCollider2D;
-
+	CapsuleCollider2D myBodyCollider;
+	BoxCollider2D myFeetCollider;
 	// Start is called before the first frame update
 	void Start()
 	{
 		myRigidBody = GetComponent<Rigidbody2D>(); // get rigidbody to change velocity  
 		myAnimator = GetComponent<Animator>();
-		myCollider2D = GetComponent<Collider2D>();
+		myBodyCollider = GetComponent<CapsuleCollider2D>();
+		myFeetCollider = GetComponent<BoxCollider2D>();
 		gravityScaleAtStart = myRigidBody.gravityScale;
 	}
 
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 		// check if player has horizontal speed, means they are moving left or right
 		bool playerHasVerticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
 		// if player has horizontal speed (moving left or right), flip the sprite
-		if (playerHasVerticalSpeed && myCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+		if (playerHasVerticalSpeed && myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
 		{
 			myAnimator.SetBool("isClimbing", true);
 			myAnimator.SetBool("isRunning", false);
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 	void ClimbLadder()
 	{
 		// if player is touching the Ladder and has input to climb
-		if (myCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+		if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
 		{
 			// create new vector based on input, keep the y velocity the same 
 			Vector2 playerVelocity = new Vector2(myRigidBody.velocity.x, moveInput.y * climbingSpeed);
@@ -97,25 +98,28 @@ public class PlayerMovement : MonoBehaviour
 
 	void OnJump(InputValue value)
 	{
+		if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && !myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && isDoubleJumped)
+		{
+			return;
+		}
 		// if player is touching the ground and jump button is pressed
-		if (value.isPressed && myRigidBody.IsTouchingLayers(LayerMask.GetMask("Ground")))
+		if (value.isPressed && myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
 		{
 			Vector2 jumpVelocityToAdd = new Vector2(0f, jumpForce);
 			myRigidBody.velocity += jumpVelocityToAdd;
 		}
 		// if player is floating and second jump button is pressed
-		if (value.isPressed && !isDoubleJumped && !myRigidBody.IsTouchingLayers(LayerMask.GetMask("Ground")))
+		if (value.isPressed && !isDoubleJumped && !myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
 		{
-			Vector2 jumpVelocityToAdd = new Vector2(0f, jumpForce / 2f);
+			Vector2 jumpVelocityToAdd = new Vector2(0f, jumpForce / 1.5f);
 			myRigidBody.velocity += jumpVelocityToAdd;
 			isDoubleJumped = true;
 		}
 		// reset double jump if player touches ground
-		if (myRigidBody.IsTouchingLayers(LayerMask.GetMask("Ground")))
+		if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
 		{
 			isDoubleJumped = false;
 		}
-
 	}
 
 }
