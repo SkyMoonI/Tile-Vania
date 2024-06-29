@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
 	CapsuleCollider2D myBodyCollider;
 	BoxCollider2D myFeetCollider;
+
+	bool isAlive = true;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -30,10 +32,12 @@ public class PlayerMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (!isAlive) { return; }
 		Run();
 		FlipSprite();
 		ClimbLadder();
 		ClimbSprite();
+		Die();
 	}
 
 
@@ -122,4 +126,11 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
+	public void Die()
+	{
+		if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
+		{
+			isAlive = false;
+		}
+	}
 }
