@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 	BoxCollider2D myFeetCollider;
 
 	bool isAlive = true;
+	private Vector2 deathKick;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 		myBodyCollider = GetComponent<CapsuleCollider2D>();
 		myFeetCollider = GetComponent<BoxCollider2D>();
 		gravityScaleAtStart = myRigidBody.gravityScale;
+		deathKick = new Vector2(0f, 20f);
 	}
 
 	// Update is called once per frame
@@ -131,6 +134,8 @@ public class PlayerMovement : MonoBehaviour
 		if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
 		{
 			isAlive = false;
+			myAnimator.SetTrigger("Dying");
+			myRigidBody.velocity = deathKick;
 		}
 	}
 }
