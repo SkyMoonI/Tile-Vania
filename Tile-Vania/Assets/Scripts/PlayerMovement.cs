@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 	bool isAlive = true;
 	private Vector2 deathKick;
 
+	[SerializeField] GameObject bullet;
+	[SerializeField] Transform gun;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -100,11 +102,15 @@ public class PlayerMovement : MonoBehaviour
 	// Input System listens for input here and we take it and assign it to moveInput 
 	void OnMove(InputValue value)
 	{
+		if (!isAlive) { return; }
+
 		moveInput = value.Get<Vector2>();
 	}
 
 	void OnJump(InputValue value)
 	{
+		if (!isAlive) { return; }
+
 		if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && !myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && isDoubleJumped)
 		{
 			return;
@@ -128,7 +134,15 @@ public class PlayerMovement : MonoBehaviour
 			isDoubleJumped = false;
 		}
 	}
+	void OnFire(InputValue value)
+	{
+		if (!isAlive) { return; }
+		if (value.isPressed)
+		{
+			Instantiate(bullet, gun.position, transform.rotation);
+		}
 
+	}
 	public void Die()
 	{
 		if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")))
