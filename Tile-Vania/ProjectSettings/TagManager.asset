@@ -20,7 +20,7 @@ TagManager:
   - Enemies
   - Hazards
   - Bullets
-  - 
+  - Interactables
   - 
   - 
   - 
@@ -56,6 +56,9 @@ TagManager:
     locked: 0
   - name: Hazards
     uniqueID: 2861512299
+    locked: 0
+  - name: Interactables
+    uniqueID: 849068399
     locked: 0
   - name: Enemy
     uniqueID: 1666914587

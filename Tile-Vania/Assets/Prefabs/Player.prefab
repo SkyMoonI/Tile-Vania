@@ -219,6 +219,8 @@ MonoBehaviour:
   movementSpeed: 7
   jumpForce: 20
   climbingSpeed: 3
+  bullet: {fileID: 3641892095383287740, guid: 86f2ac6afa7fb4c45b79f8804317c07f, type: 3}
+  gun: {fileID: 1957530047952939635}
 --- !u!61 &7607190756914792157
 BoxCollider2D:
   m_ObjectHideFlags: 0
