@@ -10,6 +10,7 @@ public class GameSession : MonoBehaviour
 {
 
 	[SerializeField] int playerLives = 3;
+	[SerializeField] public int score = 0;
 	void Awake()
 	{
 		int numGameSessions = FindObjectsOfType<GameSession>().Length;
@@ -46,5 +47,10 @@ public class GameSession : MonoBehaviour
 	{
 		SceneManager.LoadScene(0);
 		Destroy(gameObject);
+	}
+
+	public void AddToScore(int pointsToAdd)
+	{
+		score += pointsToAdd;
 	}
 }
